@@ -11,7 +11,7 @@ public class StudentGenerator extends Thread {
     private static final String[] subjects = {"Mathematics", "OOP", "Physics"};
     private static final int[] labs = {10, 20, 100};
 
-    void setResource(ConcurrentLinkedQueue<StudentClass> studentQueue) {
+    public void setQueue(ConcurrentLinkedQueue<StudentClass> studentQueue) {
         this.studentQueue = studentQueue;
     }
 
@@ -28,6 +28,7 @@ public class StudentGenerator extends Thread {
 
                     studentQueue.add(student);
                     System.out.println("Generated " + student.subjectName + ", with " + student.labsCount + " labs");
+                    
                     semaphore.release();
                 }
 
