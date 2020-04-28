@@ -31,7 +31,7 @@ public class RobotClass extends Thread {
                     System.out.println("Check " + studentQueue.remove().toString());
 
                     semaphore.release();
-                    System.out.println(subject + " check end");
+                    System.out.println("Labs in " + subject + " checked")
                     active = false;
                 }
             }
