@@ -13,7 +13,7 @@ public class Main {
     private static RobotClass robot2 = new RobotClass("OOP", studentQueue, sem);
     private static RobotClass robot3 = new RobotClass("Physics", studentQueue, sem );
 
-    public static void main(String[] args) throws InterruptedException {
+    public static void main(String[] args){
         studentGenerator.start();
         studentGenerator.setResource(studentQueue);
         robot1.start();
