@@ -11,7 +11,7 @@ public class StudentClass {
 
     @Override
     public String toString() {
-        String s = "Student in " + subjectName + " has " + labsCount + "labs";
+        String s = "Student who has " + labsCount + " in " + subjectName;
         return s;
     }
 }
