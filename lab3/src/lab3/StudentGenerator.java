@@ -27,7 +27,7 @@ public class StudentGenerator extends Thread {
                     StudentClass student = new StudentClass(subjects[sub],labs[count]);
 
                     studentQueue.add(student);
-                    System.out.println("Generated " + student.subjectName + ", with " + student.labsCount + " labs");
+                    System.out.println("Generated Student, who has " + student.labsCount + " in " + student.subjectName);
                     
                     semaphore.release();
                 }
