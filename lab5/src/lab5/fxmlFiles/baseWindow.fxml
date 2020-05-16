@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lab5.java.controller.BaseWindowController">
+    <children>
+        <AnchorPane layoutY="200.0" prefHeight="200.0" prefWidth="600.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="200.0">
+            <children>
+                <AnchorPane prefHeight="200.0" prefWidth="480.0">
+                    <children>
+                        <TableView fx:id="tableView" prefHeight="200.0" prefWidth="600.0">
+                            <columns>
+                                <TableColumn fx:id="idColumn" prefWidth="66.0" text="id" />
+                                <TableColumn fx:id="prodidColumn" prefWidth="204.0" text="Prodid" />
+                                <TableColumn fx:id="titleColumn" prefWidth="197.0" text="Title" />
+                                <TableColumn fx:id="costColumn" prefWidth="132.0" text="Cost" />
+                            </columns>
+                        </TableView>
+                    </children>
+                </AnchorPane>
+            </children>
+        </AnchorPane>
+        <AnchorPane layoutY="-27.0" prefHeight="200.0" prefWidth="600.0" AnchorPane.bottomAnchor="200.0" AnchorPane.leftAnchor="0.0">
+            <children>
+                <Label layoutX="152.0" layoutY="60.0" text="Click the button to work with this table">
+                    <font>
+                        <Font name="AR ESSENCE" size="20.0" />
+                    </font>
+                </Label>
+                <Button fx:id="buttonAdd" layoutX="94.0" layoutY="114.0" onAction="#addButton" prefHeight="27.0" prefWidth="100.0" text="Add" AnchorPane.bottomAnchor="86.0" AnchorPane.leftAnchor="94.0" AnchorPane.rightAnchor="416.0" AnchorPane.topAnchor="114.0">
+                    <font>
+                        <Font name="AR ESSENCE" size="16.0" />
+                    </font>
+                </Button>
+                <Button fx:id="buttonDelete" layoutX="257.0" layoutY="114.0" onAction="#deleteButton" prefHeight="27.0" prefWidth="90.0" text="Delete" AnchorPane.bottomAnchor="86.0" AnchorPane.leftAnchor="257.0" AnchorPane.rightAnchor="253.0" AnchorPane.topAnchor="114.0">
+                    <font>
+                         <Font name="AR ESSENCE" size="16.0" />
+                     </font>
+                </Button>
+                <Button fx:id="buttonChange" layoutX="395.0" layoutY="114.0" onAction="#changePriceButton" prefHeight="27.0" prefWidth="124.0" text="Change price" AnchorPane.bottomAnchor="86.0" AnchorPane.leftAnchor="395.0" AnchorPane.rightAnchor="81.0" AnchorPane.topAnchor="114.0">
+                     <font>
+                        <Font name="AR ESSENCE" size="16.0" />
+                     </font>
+                </Button>
+                <Button fx:id="buttonShow" layoutX="255.0" layoutY="172.0" onAction="#showAllButton" prefHeight="30.0" prefWidth="90.0" text="Show All" AnchorPane.leftAnchor="255.0" AnchorPane.rightAnchor="255.0" AnchorPane.topAnchor="172.0">
+                    <font>
+                        <Font name="AR ESSENCE" size="16.0" />
+                    </font>
+                </Button>
+                <Button fx:id="buttonPrice" onAction="#priceButton" prefHeight="30.0" prefWidth="100.0" text="Price" AnchorPane.leftAnchor="94.0" AnchorPane.rightAnchor="416.0" AnchorPane.topAnchor="172.0">
+                    <font>
+                        <Font name="AR ESSENCE" size="16.0" />
+                    </font>
+                </Button>
+                <Button fx:id="buttonFilter" onAction="#filterButton" prefHeight="30.0" prefWidth="100.0" text="Filter by price" AnchorPane.leftAnchor="395.0" AnchorPane.rightAnchor="81.0" AnchorPane.topAnchor="172.0">
+                    <font>
+                        <Font name="AR ESSENCE" size="16.0" />
+                     </font>
+                </Button>
+            </children>
+        </AnchorPane>
+    </children>
+</AnchorPane>

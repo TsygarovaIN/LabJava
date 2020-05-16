@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane prefHeight="200.0" prefWidth="200.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lab5.java.controller.ChangePriceController">
+    <children>
+        <Label layoutX="26.0" layoutY="34.0" text="Title">
+            <font>
+                <Font name="AR ESSENCE" size="16.0" />
+            </font>
+        </Label>
+
+        <TextField fx:id="titleId" layoutX="70.0" layoutY="28.0" prefHeight="23.0" prefWidth="96.0" />
+
+        <Label layoutX="26.0" layoutY="77.0" prefHeight="23.0" prefWidth="35.0" text="Cost">
+            <font>
+                <Font name="AR ESSENCE" size="16.0" />
+            </font>
+        </Label>
+
+        <TextField fx:id="cost" layoutX="70.0" layoutY="71.0" prefHeight="23.0" prefWidth="96.0">
+            <font>
+                <Font name="AR ESSENCE" size="16.0" />
+            </font>
+        </TextField>
+
+        <Button layoutX="49.0" layoutY="132.0" mnemonicParsing="false" onAction="#changePriceButton" text="Change price" textAlignment="CENTER">
+            <font>
+                <Font name="AR ESSENCE" size="17.0" />
+            </font>
+        </Button>
+    </children>
+</AnchorPane>

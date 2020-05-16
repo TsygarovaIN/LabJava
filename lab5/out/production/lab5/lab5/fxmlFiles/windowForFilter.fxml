@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane prefHeight="400.0" prefWidth="480.0" xmlns="http://javafx.com/javafx/10.0.2-internal"
+            xmlns:fx="http://javafx.com/fxml/1" fx:controller="lab5.java.controller.FilterController">
+    <children>
+        <AnchorPane prefHeight="200.0" prefWidth="480.0">
+            <children>
+                <HBox layoutX="21.0" layoutY="61.0" prefHeight="26.0" prefWidth="225.0" spacing="26">
+                    <children>
+                        <Label prefHeight="17.0" prefWidth="65.0" text="Min cost">
+                            <font>
+                                <Font name="AR ESSENCE" size="16.0" />
+                             </font>
+                        </Label>
+                        <TextField fx:id="minCost" prefHeight="27.0" prefWidth="92.0" />
+                    </children>
+                </HBox>
+                <HBox layoutX="21.0" layoutY="120.0" prefHeight="26.0" prefWidth="225.0" spacing="10">
+                    <children>
+                        <Label prefHeight="17.0" prefWidth="79.0" text="Max cost">
+                             <font>
+                                <Font name="AR ESSENCE" size="16.0" />
+                             </font>
+                        </Label>
+                        <TextField fx:id="maxCost" prefHeight="27.0" prefWidth="94.0" />
+                    </children>
+                </HBox>
+                <Button layoutX="286.0" layoutY="87.0" mnemonicParsing="false" onAction="#filterButton" prefHeight="27.0" prefWidth="117.0" text="Filter">
+                    <font>
+                        <Font name="AR ESSENCE" size="16.0" />
+                    </font>
+                </Button>
+            </children>
+        </AnchorPane>
+        <AnchorPane prefHeight="200.0" prefWidth="480.0" AnchorPane.topAnchor="200">
+            <children>
+                <TableView fx:id="tableView" prefHeight="200.0" prefWidth="480.0">
+                    <columns>
+                        <TableColumn fx:id="idColumn" prefWidth="30.0" text="id" />
+                        <TableColumn fx:id="prodidColumn" prefWidth="240.0" text="Prodid" />
+                        <TableColumn fx:id="titleColumn" prefWidth="100.0" text="Title" />
+                        <TableColumn fx:id="costColumn" prefWidth="110.0" text="Cost" />
+                    </columns>
+                </TableView>
+            </children></AnchorPane>
+    </children>
+</AnchorPane>
