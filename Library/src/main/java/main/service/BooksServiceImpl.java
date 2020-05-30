@@ -21,7 +21,7 @@ public class BooksServiceImpl implements BooksService{
     }
 
     @Override
-    public Books findBook(int id) {
+    public Books findBook(Long id) {
         Optional<Books> optionalBook = bookRepository.findById((long)id);
         if (optionalBook.isPresent()) {
             return optionalBook.get();
@@ -36,7 +36,7 @@ public class BooksServiceImpl implements BooksService{
     }
 
     @Override
-    public void deleteBook(int id) {
+    public void deleteBook(Long id) {
         Optional<Books> optionalBook = bookRepository.findById((long)id);
         if (optionalBook.isPresent()) {
             bookRepository.delete(optionalBook.get());

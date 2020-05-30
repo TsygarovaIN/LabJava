@@ -1,42 +1,48 @@
 package main.web;
 
-import main.repos.Book_typesRepository;
+import lombok.RequiredArgsConstructor;
+import main.repos.BookTypesRepository;
 import main.repos.BooksRepository;
 import main.repos.ClientsRepository;
 import main.repos.JournalRepository;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
-import java.util.Map;
-
 @Controller
+@RequiredArgsConstructor
 public class TemplatesController {
-    private JournalRepository journalRepository;
-    private ClientsRepository clientsRepository;
-    private BooksRepository booksRepository;
-    private Book_typesRepository bookTypesRepository;
+    private final BookTypesRepository bookTypeRepository;
+    private final ClientsRepository clientRepository;
+    private final BooksRepository bookRepository;
+    private final JournalRepository journalRepository;
 
     @GetMapping("/journal")
-    public String journal(Map<String, Object> model) {
-        model.put("journalList", journalRepository.findAll());
-        return "Journal";
-    }
-
-    @GetMapping("/clients")
-    public String clients(Map<String, Object> model) {
-        model.put("clientsList", clientsRepository.findAll());
-        return "Clients";
+    public String journalPage(Model model) {
+        model.addAttribute("journalList", journalRepository.findAll());
+        return "journal";
     }
 
     @GetMapping("/books")
-    public String books(Map<String, Object> model) {
-        model.put("booksList", booksRepository.findAll());
-        return "Books";
+    public String booksPage(Model model) {
+        model.addAttribute("bookList", bookRepository.findAll());
+        return "books";
+    }
+
+    @GetMapping("/clients")
+    public String clientsPage(Model model) {
+        model.addAttribute("clientList", clientRepository.findAll());
+        return "clients";
     }
 
     @GetMapping("/bookTypes")
-    public String bookTypes(Map<String, Object> model) {
-        model.put("bookTypesList", bookTypesRepository.findAll());
-        return "BookTypes";
+    public String bookTypesPage(Model model) {
+        model.addAttribute("bookTypesList", bookTypeRepository.findAll());
+        return "bookTypes";
+    }
+
+    @GetMapping("/hello")
+    public String hello(){
+        return "hello";
     }
 }

@@ -20,7 +20,7 @@ public class ClientsServiceImpl implements ClientsService{
     }
 
     @Override
-    public Clients findClient(int id) {
+    public Clients findClient(Long id) {
         Optional<Clients> optionalClient = clientRepository.findById((long) id);
         if (optionalClient.isPresent()) {
             return optionalClient.get();
@@ -35,7 +35,7 @@ public class ClientsServiceImpl implements ClientsService{
     }
 
     @Override
-    public void deleteClient(int id) {
+    public void deleteClient(Long id) {
         Optional<Clients> optionalClient = clientRepository.findById((long) id);
         if (optionalClient.isPresent()) {
             clientRepository.delete(optionalClient.get());

@@ -13,7 +13,7 @@ public class Clients {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column (name = "id")
-    private Integer id;
+    private Long id;
     @Column(name = "firstName")
     private String firstName;
 

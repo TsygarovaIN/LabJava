@@ -12,13 +12,13 @@ public class Books {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private Integer id;
+    private Long id;
     @Column(name = "name")
     private String name;
     @Column(name = "cnt")
-    private Integer cnt;
+    private Long cnt;
     @Column(name = "typeId")
-    private Integer typeId;
+    private Long typeId;
 
     @OneToMany(targetEntity = Journal.class, cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "bookId", referencedColumnName = "id")
@@ -28,7 +28,7 @@ public class Books {
     public Books() {
     }
 
-    public Books(String name, Integer cnt, Integer typeId) {
+    public Books(String name, Long cnt, Long typeId) {
         this.name = name;
         this.cnt = cnt;
         this.typeId = typeId;

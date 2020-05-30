@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface JournalService {
     List<Journal> journalList();
-    Journal findJournal(int id);
+    Journal findJournal(Long id);
     Journal addJournal(Journal journal);
-    void deleteJournal(int id);
+    void deleteJournal(Long id);
 }

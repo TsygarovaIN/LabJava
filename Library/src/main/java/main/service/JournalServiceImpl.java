@@ -21,7 +21,7 @@ public class JournalServiceImpl implements JournalService {
     }
 
     @Override
-    public Journal findJournal(int id) {
+    public Journal findJournal(Long id) {
         Optional<Journal> optionalJournal = journalRepository.findById((long) id);
         if (optionalJournal.isPresent()) {
             return optionalJournal.get();
@@ -36,7 +36,7 @@ public class JournalServiceImpl implements JournalService {
     }
 
     @Override
-    public void deleteJournal(int id) {
+    public void deleteJournal(Long id) {
         Optional<Journal> optionalJournal = journalRepository.findById((long) id);
         if (optionalJournal.isPresent()) {
             journalRepository.delete(optionalJournal.get());
