@@ -1,30 +1,21 @@
 package main.ObjectClasses;
 
 import main.Main;
-import org.w3c.dom.ls.LSOutput;
-
-import java.util.ArrayList;
 
 //источник
 public class Source {
+    private static int countAllRequest;         //количество всех сгенерированных заявок
+
     private int number;                        //номер источника
     private static final double alpha = Main.alpha;   // для равномерного закона распределения при генерации заявки
     private static final double beta = Main.beta;
     private double prevTime;             //время генерации предыдущей заявки (-1 если заявки ещё не генерировались)
-    private int countRequest = 0;           //количество заявок сгенерированных этим источником
+    private int countRequest = 0;          //количество заявок сгенерированных этим источником
+    private int countRefusal = 0;          //количество заявок в отказе
 
     public Source(int number){
         prevTime = -1;
         this.number = number;
-      //  System.out.println("Создали ИСТОЧНИК " + this);
-    }
-
-    @Override
-    public String toString() {
-        return "Source{" +
-                "number=" + number +
-                ", prevTime=" + prevTime +
-                '}';
     }
 
     public Request generate() {
@@ -39,23 +30,27 @@ public class Source {
             timeGener = prevTime + (beta - alpha) * Math.random() + alpha;
 
         countRequest++;
+        countAllRequest++;
         Request request = new Request(timeGener, countRequest);
         prevTime = timeGener;
 
         System.out.println("Заявка " + getNumber() + "." + request.getNumber() + " сгенерирована");
-       // System.out.println(request);
         return request;
     }
 
-
+    //если предположительное время генерации следующей заявки меньше, чем системное, то можем снова генерировать
+    // т.к. источник бесконечны с равномерным законом распределения
     public boolean isReady(){
         return ((prevTime == -1)) || ((prevTime + alpha) < Main.systemTime);
-        //если предположительное время генерации следующей заявки меньше, чем системное, то можем снова генерировать
-    }  // т.к. источник бесконечны с равномерным законом распределения
+    }
 
     public void clear(){
         prevTime = -1;
         number = 0;
+    }
+
+    public static int getCountAllRequest() {
+        return countAllRequest;
     }
 
     public int getNumber() {
@@ -68,6 +63,18 @@ public class Source {
 
     public void setPrevTime(double prevTime) {
         this.prevTime = prevTime;
+    }
+
+    public int getCountRequest() {
+        return countRequest;
+    }
+
+    public int getCountRefusal() {
+        return countRefusal;
+    }
+
+    public void setCountRefusal() {
+        countRefusal++;
     }
 
     public static class Request {             //внутренний класс для заявки
@@ -87,16 +94,9 @@ public class Source {
             count++;
         }
 
-        @Override
-        public String toString() {
-            return "Request {" +
-                    "inBuffer =" + inBuffer +
-                    ", inDevice =" + inDevice +
-                    ", inRefusal =" + inRefusal +
-                    ", tGiner =" + tGiner +
-                    ", number =" + number +
-                    ", count =" + count +
-                    "} ";
+        public void setInRefusal(boolean inRefusal, int numberSource) {
+            System.out.println("Заявка " + numberSource + "." + number + " ушла в отказ");
+            this.inRefusal = inRefusal;
         }
 
         public static int getCountRefusal() {
@@ -133,11 +133,6 @@ public class Source {
 
         public boolean isInRefusal() {
             return inRefusal;
-        }
-
-        public void setInRefusal(boolean inRefusal, int numberSource) {
-            System.out.println("Заявка " + numberSource + "." + number + " ушла в отказ");
-            this.inRefusal = inRefusal;
         }
 
         public double gettGiner() {

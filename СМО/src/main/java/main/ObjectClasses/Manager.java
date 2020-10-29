@@ -7,7 +7,7 @@ import java.util.ArrayList;
 //Выбор заявки из буфера на прибор, выбор прибора по кольцу
 public class Manager {
      private static int lastDevice = 0; //номер последнего прибора, который проверили в предыдущий раз
-                                    // и с которого начнётся новая проверка
+                                        // и с которого начнётся новая проверка
 
      public void toDevice(ArrayList<Buffer> buffers, ArrayList<Device> devices){
           boolean isEmptyAnyone = false; //Проверяем, есть ли свободный прибор
@@ -15,7 +15,7 @@ public class Manager {
           //Т.К. выборка по кольцу, то смотрим c последнего, проверенного в прошлый раз прибора, до конца массива
           for (int i = lastDevice; i < devices.size(); i++) {
                if(devices.get(i).isEmpty()){
-                    isEmptyAnyone = true;  //Если нашли свободный меняем флаг и
+                    isEmptyAnyone = true;  //Если нашли свободный, меняем флаг и
                     lastDevice = devices.get(i).getNumber(); //Запоменаем его номер
                     break;
                }
@@ -78,4 +78,6 @@ public class Manager {
                }
           }
      }
+
+
 }

@@ -34,20 +34,20 @@ public class Main {
 //        beta = scanner.nextDouble();
 //        System.out.print("Введите lambda: ");
 //        lambda = scanner.nextDouble();
-        System.out.print("Введите количсетво источников: ");
+        System.out.print("Введите количество источников: ");
         countSources = scanner.nextInt();
-        System.out.print("Введите количсетво буферов: ");
+        System.out.print("Введите количество буферов: ");
         countBuffers = scanner.nextInt();
-        System.out.print("Введите количсетво приборов: ");
+        System.out.print("Введите количество приборов: ");
         countDevices = scanner.nextInt();
-        System.out.print("Введите количсетво моделируемых заявок: ");
+        System.out.print("Введите количество моделируемых заявок: ");
         countRequests = scanner.nextInt();
 
         ArrayList<Source> sources = new ArrayList<Source>(countSources);
         for (int i = 0; i < countSources; i++) {
             sources.add(new Source(i + 1));
         }
-        Collections.shuffle(sources);
+      //  Collections.shuffle(sources);
 
         ArrayList<Buffer> buffers = new ArrayList<>(countBuffers);
         for (int i = 0; i < countBuffers; i++) {
@@ -58,6 +58,8 @@ public class Main {
         for (int i = 0; i < countDevices; i++) {
             devices.add(new Device(i + 1));
         }
+
+        Manager manager = new Manager();         //В менаджер передаём массив с буферами и приборами
 
         //Главный цикл программы
         while(Device.getCountRequest() != countRequests) {
@@ -85,18 +87,42 @@ public class Main {
 
                 if (!newRequest.isInBuffer()) {    //Если заявка не была добавлена в буфер (все заняты)
                     Source.Request req = buffers.get(countBuffers - 1).getRequest(); //Достаём последнюю заявку
-                    int numberSource = buffers.get(countBuffers - 1).getNumberSource();
-                    req.setInRefusal(true, numberSource);                    //Ставим статус "В отказ"
+                    int numberSourceReq = buffers.get(countBuffers - 1).getNumberSource(); //и номер её источника
+
+                    req.setInRefusal(true, numberSourceReq);                  //Ставим статус "В отказ"
+                    sources.get(numberSourceReq - 1).setCountRefusal();
                     Source.Request.setCountRefusal();                                //Увеличиваем счётчик заявок в отказе
+
                     buffers.get(countBuffers - 1).delete();                          //Удаляем последнюю заявку в буфере
                     buffers.get(countBuffers - 1).add(newRequest, numberSourse);     //Ставим на её место новую заявку
                 }
             }
 
-            Manager manager = new Manager();         //В менаджер передаём массив с буферами и приборами
             manager.toDevice(buffers, devices);      //внутри происходит постановка заявки на прибор из буфера, если есть свободный прибор
             systemTime += 0.1;
         }
+
+//        //дообрабатываем все заявки, которые остались в буферах и приборах
+//        boolean isBuffersEmpty = false;
+//        boolean isDevicesEmpty = false;
+//
+
         //Вывод результатов
+        System.out.println("\nРЕЗУЛЬТАТЫ");
+        System.out.println("\nКоличество заявок, сгненерированных каждым источником");
+        for(Source s : sources) {
+            System.out.println("Источник №" + s.getNumber() + " сгенерировал " + s.getCountRequest());
+            System.out.println("Вероятность отказа: " + (double)s.getCountRefusal()/s.getCountRequest());
+        }
+        System.out.println("\nВсего заявок в отказе " + Source.Request.getCountRefusal());
+        System.out.println("\nСреднее время пребывания заявки в приборе: " +
+                Device.getAllTime() / Device.getCountRequest());
+        System.out.println("\nСреднее время пребывания заявки в буфере: " +
+                Buffer.getAllTime()/Buffer.getCountRequest());
+
+                System.out.println("\nКоэффициенты использования приборов");
+        for (Device d : devices){
+            System.out.println("Прибор №" + d.getNumber() + " коэффициент " + d.getTimeInDevice()/systemTime);
+        }
     }
 }

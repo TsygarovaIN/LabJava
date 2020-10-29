@@ -5,6 +5,7 @@ import main.Main;
 //буфер
 public class Buffer {
     private static double allTime;         //время нахождения всех заявок во всех буферах
+    private static int countRequest;      //количество заявок в буферах
 
     private Source.Request request;       //заявка в буфере
     private int numberSource;             //номер источника из которого появилась заявка (нужно для приоритета)
@@ -14,18 +15,6 @@ public class Buffer {
 
     public Buffer(int number){
         this.number = number;
-        //System.out.println("Создали БУФЕР " + this);
-    }
-
-    @Override
-    public String toString() {
-        return "Buffer{" +
-                "request=" + request +
-                ", numberSource=" + numberSource +
-                ", timeAdd=" + timeAdd +
-                ", timeOut=" + timeOut +
-                ", number=" + number +
-                '}';
     }
 
     public void add(Source.Request request, int numberSource){
@@ -33,6 +22,7 @@ public class Buffer {
         this.numberSource = numberSource;
         timeAdd = Main.systemTime;
         request.setInBuffer(true);
+        countRequest++;
         System.out.println("Заявка " + numberSource + "." + request.getNumber() + " в буфере №" + number);
     }
 
@@ -62,6 +52,10 @@ public class Buffer {
         timeAdd = 0;
         timeOut = 0;
         number = 0;
+    }
+
+    public static int getCountRequest() {
+        return countRequest;
     }
 
     public static double getAllTime() {
