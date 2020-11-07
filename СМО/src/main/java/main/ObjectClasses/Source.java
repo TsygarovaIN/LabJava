@@ -6,47 +6,46 @@ import main.Main;
 public class Source {
     private static int countAllRequest;         //количество всех сгенерированных заявок
 
-    private int number;                        //номер источника
+    private final int number;                        //номер источника
     private static final double alpha = Main.alpha;   // для равномерного закона распределения при генерации заявки
     private static final double beta = Main.beta;
-    private double prevTime;             //время генерации предыдущей заявки (-1 если заявки ещё не генерировались)
+    private double prevTime;               //время генерации предыдущей заявки (-1 если заявки ещё не генерировались)
     private int countRequest = 0;          //количество заявок сгенерированных этим источником
     private int countRefusal = 0;          //количество заявок в отказе
+    private double tObc  = 0.0;            //Время обслуживания заявок данного источника
+    private double tBP = 0.0;              //Время нахождения в буфере заявок данного источника
 
     public Source(int number){
-        prevTime = -1;
+        prevTime = 0.0;
         this.number = number;
     }
 
     public Request generate() {
-        if(prevTime == -1)
-            prevTime = 0.0;
-
-        double timeGener = 0.0;
-
-        if(Main.systemTime == 0.0)
-            timeGener = 0.0;
-        else
-            timeGener = prevTime + (beta - alpha) * Math.random() + alpha;
+        double timeGener = prevTime + (beta - alpha) * Math.random() + alpha;
 
         countRequest++;
         countAllRequest++;
-        Request request = new Request(timeGener, countRequest);
+        Request request = new Request(timeGener, countRequest, number);
         prevTime = timeGener;
 
-        System.out.println("Заявка " + getNumber() + "." + request.getNumber() + " сгенерирована");
+       // System.out.println("Заявка " + getNumber() + "." + request.getNumber() + " сгенерирована в " + timeGener);
         return request;
     }
 
-    //если предположительное время генерации следующей заявки меньше, чем системное, то можем снова генерировать
-    // т.к. источник бесконечны с равномерным законом распределения
-    public boolean isReady(){
-        return ((prevTime == -1)) || ((prevTime + alpha) < Main.systemTime);
+    public double gettObc() {
+        return tObc;
     }
 
-    public void clear(){
-        prevTime = -1;
-        number = 0;
+    public void settObc(double tObc) {
+        this.tObc += tObc;
+    }
+
+    public double gettBP() {
+        return tBP;
+    }
+
+    public void settBP(double tBP) {
+        this.tBP += tBP;
     }
 
     public static int getCountAllRequest() {
@@ -87,16 +86,22 @@ public class Source {
         private double tGiner;                //время гинерации заявки
         private static int count = 0;         //количество всех заявок из этого источника
         private int number;                   //номер заявки
+        private int sourceNumber;
 
-        public Request(double tGiner, int number){
+        public Request(double tGiner, int number, int sourceNumber){
             this.tGiner = tGiner;
             this.number = number;
+            this.sourceNumber = sourceNumber;
             count++;
         }
 
         public void setInRefusal(boolean inRefusal, int numberSource) {
-            System.out.println("Заявка " + numberSource + "." + number + " ушла в отказ");
+           // System.out.println("Заявка " + numberSource + "." + number + " ушла в отказ");
             this.inRefusal = inRefusal;
+        }
+
+        public int getSourceNumber() {
+            return sourceNumber;
         }
 
         public static int getCountRefusal() {

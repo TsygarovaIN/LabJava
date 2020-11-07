@@ -11,6 +11,7 @@ public class Buffer {
     private int numberSource;             //номер источника из которого появилась заявка (нужно для приоритета)
     private double timeAdd;               //время заявки в момент поступления;
     private double timeOut;              //воемя выхода заявки из буфера;
+    private double tForSource;
     private int number;                  //номер буфера
 
     public Buffer(int number){
@@ -23,19 +24,24 @@ public class Buffer {
         timeAdd = Main.systemTime;
         request.setInBuffer(true);
         countRequest++;
-        System.out.println("Заявка " + numberSource + "." + request.getNumber() + " в буфере №" + number);
+        //System.out.println("Заявка " + numberSource + "." + request.getNumber() + " в буфере №" + number);
     }
 
     public void delete(){
-        System.out.println("Заявка " + numberSource + "." + request.getNumber() + " удалена из буфера №" + number);
+       // System.out.println("Заявка " + numberSource + "." + request.getNumber() + " удалена из буфера №" + number);
         request.setInBuffer(false);
         timeOut = Main.systemTime;
         allTime += timeOut - timeAdd;
+        tForSource = timeOut - timeAdd;
         request = null;
     }
 
     public boolean isEmpty(){
         return request == null;
+    }
+
+    public double gettForSource() {
+        return tForSource;
     }
 
     public int getNumber() {

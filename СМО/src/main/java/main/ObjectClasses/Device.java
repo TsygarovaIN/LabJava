@@ -15,7 +15,9 @@ public class Device {
     private double timeOut;             //время ухода из прибора
     private double timeInDevice;        //время обработки заявок этим прибором
     private double timeToTreatment;     //время, которое нужно на обработку
+    private double tForSource;
     private int numberSource;
+    private int countRequestThis;
 
     public Device(int number){
         this.number = number;
@@ -38,45 +40,43 @@ public class Device {
 
     public void add(Source.Request request, int numberSource){
         this.request = request;
-        this.numberSource =numberSource;
+        this.numberSource = numberSource;
         request.setInDevice(true);
         timeAdd = Main.systemTime;
         timeEmpty = timeAdd - timeOut;
-        System.out.println("Заявка " + numberSource + "." + request.getNumber() + " в приборе №" + number);
+       // System.out.println("Заявка " + numberSource + "." + request.getNumber() + " в приборе №" + number);
+
         treatment();
     }
 
     public void delete(){
-        System.out.println("Заявка " + numberSource + "." + request.getNumber() + " вышла из прибора №" + number);
+       // System.out.println("Заявка " + numberSource + "." + request.getNumber() + " вышла из прибора №" + number);
         timeOut = Main.systemTime;
-        timeInDevice = timeOut - timeAdd;
-        allTime += timeInDevice;
+        timeInDevice += timeOut - timeAdd;
+        allTime += timeOut - timeAdd;
+        tForSource = timeOut - timeAdd;
         countRequest++;
+        countRequestThis++;
         request.setInDevice(false);
         request = null;
         numberSource = 0;
     }
 
     public boolean isEmpty(){
-        if(request == null)
-            return true;
-        else {
-            double timeToEnd = timeAdd + timeToTreatment;       //предполагаемое время завершения
-            if (timeToEnd <= Main.systemTime) {
-                delete();
-                return true;
-            }
-            else
-                return false;
-        }
+       return request == null;   //находится ли прибор в простое
     }
 
-    /* Обработка заявки: вычисляем время, когда прибор должен закончить обработку
-    и на каждом шаге в основном цикле программы проверяем, время обработки + время поступления <= системному времени
-    если да, то освобождаем прибор методом delete(), если нет, то продолжаем работу дальше */
-
+    /* Обработка заявки: вычисляем время, когда прибор должен закончить обработку */
     public void treatment(){
-        timeToTreatment = (- (1.0 - lambda)) * Math.log(Math.random());
+          timeToTreatment = timeAdd + Math.log(1 - Math.random()) / (- lambda);
+    }
+
+    public double gettForSource() {
+        return tForSource;
+    }
+
+    public int getNumberSource() {
+        return numberSource;
     }
 
     public double getTimeToTreatment() {
@@ -113,6 +113,10 @@ public class Device {
 
     public int getNumber() {
         return number;
+    }
+
+    public int getCountRequestThis() {
+        return countRequestThis;
     }
 
     public void setNumber(int number) {

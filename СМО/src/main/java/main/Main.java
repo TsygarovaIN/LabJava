@@ -20,20 +20,10 @@ public class Main {
     public static int countBuffers;             //количество буферов в системе
     public static int countDevices;             //количество приборов в системе
     public static int countRequests;            //количество моделируемых заявок
-
-
-    //В каждую единицу времени (проход цикла) в самом начале, проверяем каждый источник на готовность сгенерировать заявку, если
-    //он готов, то генерирует от него, если нет, то ищем другой
-    //источники сначала заносим в лист, а затем перемешиваем и генерируем заявки из них в уже рандомном (после перемешивания) порядке
+    public static boolean generateIsReady = false;      //Флаг окончания основного цикла моделирования
 
     public static void main(String[] args) throws IOException {
         Scanner scanner = new Scanner(System.in);
-//        System.out.print("Введите alpha: ");
-//        alpha = scanner.nextDouble();
-//        System.out.print("Введите beta: ");
-//        beta = scanner.nextDouble();
-//        System.out.print("Введите lambda: ");
-//        lambda = scanner.nextDouble();
         System.out.print("Введите количество источников: ");
         countSources = scanner.nextInt();
         System.out.print("Введите количество буферов: ");
@@ -47,7 +37,6 @@ public class Main {
         for (int i = 0; i < countSources; i++) {
             sources.add(new Source(i + 1));
         }
-      //  Collections.shuffle(sources);
 
         ArrayList<Buffer> buffers = new ArrayList<>(countBuffers);
         for (int i = 0; i < countBuffers; i++) {
@@ -59,68 +48,95 @@ public class Main {
             devices.add(new Device(i + 1));
         }
 
-        Manager manager = new Manager();         //В менаджер передаём массив с буферами и приборами
+        ArrayList<Source.Request> requestList = new ArrayList<>();
+        for(Source s : sources)
+            requestList.add(s.generate());
+
+        Manager manager = new Manager();         //Менеджер занимается постановкой заявок на прибор из буферов
 
         //Главный цикл программы
-        while(Device.getCountRequest() != countRequests) {
-            Source.Request newRequest = null;  //Новая заявка, с которой работаем
-            int numberSourse = 0;             // номер источника, у которого сгенерировалась заявка
+        while(Source.getCountAllRequest() != countRequests) {
 
-            for(Source s : sources){          //находим источник, который готов сгенерировать заявку
-                if(s.isReady()){
-                    newRequest = s.generate();
-                    numberSourse = s.getNumber();
+            //Находим заявку с минимальным временем генерации и берём её из массива заявок
+            //На место этой заявки встанет новая заявка из этого же источника
+            double minTime = requestList.get(0).gettGiner();
+            Source.Request newRequest = requestList.get(0);  //Новая заявка, с которой работаем
+            int numberSourse = requestList.get(0).getSourceNumber();   // номер источника, у которого сгенерировалась заявка
+            int position = 0;
+
+            for(int i = 0; i < requestList.size(); i++){
+                if(requestList.get(i).gettGiner() < minTime) {
+                    minTime = requestList.get(i).gettGiner();
+                    newRequest = requestList.get(i);
+                    numberSourse = requestList.get(i).getSourceNumber();
+                    position = i;
+                }
+            }
+
+            systemTime = newRequest.gettGiner();  //Системное вреям фиксирует событие - Генерация заявки
+
+            requestList.remove(position);                  //Удаляем самую раннюю сгенерировшаюся заявку
+            requestList.add(sources.get(numberSourse - 1).generate());  //Добавляем новую заявку из того же источника
+
+            for (Buffer b : buffers) {          //Находим пустой буфер
+                if (b.isEmpty()) {              //Если нашли, то добавляем туда новую заявку
+                    b.add(newRequest, numberSourse);
+                    systemTime = b.getTimeAdd();  //Системное вреям фиксирует событие - Добавлени в буфер
                     break;
                 }
             }
 
-            //Если ни один источник не смог сгенерировать заявку,
-            //то разбираемся только с теми заявками, которые лежат в буфере и приборах
-            //Если кто-то сгенерировал, то работаем с ней
-            if(newRequest != null) {
-                for (Buffer b : buffers) {          //Находим пустой буфер
-                    if (b.isEmpty()) {              //Если нашли, то добавляем туда новую заявку
-                        b.add(newRequest, numberSourse);
-                        break;
-                    }
-                }
+            if (!newRequest.isInBuffer()) {    //Если заявка не была добавлена в буфер (все заняты)
+                Source.Request req = buffers.get(countBuffers - 1).getRequest();       //Достаём последнюю заявку
+                int numberSourceReq = buffers.get(countBuffers - 1).getNumberSource(); //и номер её источника
 
-                if (!newRequest.isInBuffer()) {    //Если заявка не была добавлена в буфер (все заняты)
-                    Source.Request req = buffers.get(countBuffers - 1).getRequest(); //Достаём последнюю заявку
-                    int numberSourceReq = buffers.get(countBuffers - 1).getNumberSource(); //и номер её источника
+                req.setInRefusal(true, numberSourceReq);                  //Ставим статус "В отказ"
+                sources.get(numberSourceReq - 1).setCountRefusal();
+                Source.Request.setCountRefusal();                                //Увеличиваем счётчик заявок в отказе
 
-                    req.setInRefusal(true, numberSourceReq);                  //Ставим статус "В отказ"
-                    sources.get(numberSourceReq - 1).setCountRefusal();
-                    Source.Request.setCountRefusal();                                //Увеличиваем счётчик заявок в отказе
+                buffers.get(countBuffers - 1).delete();                          //Удаляем последнюю заявку в буфере
+                //Добавляем информацию о нахождении заявки из нужного источника
+                sources.get(numberSourceReq - 1).settBP(buffers.get(countBuffers - 1).gettForSource());
 
-                    buffers.get(countBuffers - 1).delete();                          //Удаляем последнюю заявку в буфере
-                    buffers.get(countBuffers - 1).add(newRequest, numberSourse);     //Ставим на её место новую заявку
-                }
+                systemTime = buffers.get(countBuffers - 1).getTimeOut();         //Системное вреям фиксирует событие - Уход заявки в отказ
+                buffers.get(countBuffers - 1).add(newRequest, numberSourse);     //Ставим на её место новую заявку
+                systemTime = buffers.get(countBuffers - 1).getTimeAdd();         //Системное вреям фиксирует событие - Добавлени в буфер
             }
 
-            manager.toDevice(buffers, devices);      //внутри происходит постановка заявки на прибор из буфера, если есть свободный прибор
-            systemTime += 0.1;
+            manager.toDevice(buffers, devices, requestList, sources);      //внутри происходит постановка заявки на прибор из буфера, если есть свободный прибор
         }
 
-//        //дообрабатываем все заявки, которые остались в буферах и приборах
-//        boolean isBuffersEmpty = false;
-//        boolean isDevicesEmpty = false;
-//
+        generateIsReady = true;
+
+        //Дорабатываем все заявки, которые есть в буферах и приборах
+        boolean isAllDevicesEmpty = false;   //Проверка на пустоту всех приборов, дорабатываем, пока не будут все пустые
+        while(!isAllDevicesEmpty) {
+            int count = 0;
+            for (Device d : devices) {
+                if (d.isEmpty())
+                    count++;
+            }
+            if (count == devices.size())
+                isAllDevicesEmpty = true;
+            else
+                manager.toDevice(buffers, devices, requestList, sources);
+        }
 
         //Вывод результатов
         System.out.println("\nРЕЗУЛЬТАТЫ");
-        System.out.println("\nКоличество заявок, сгненерированных каждым источником");
+        System.out.println("\nИнформация о работе каждого источника");
         for(Source s : sources) {
             System.out.println("Источник №" + s.getNumber() + " сгенерировал " + s.getCountRequest());
             System.out.println("Вероятность отказа: " + (double)s.getCountRefusal()/s.getCountRequest());
+            double srTOb = s.gettObc() / s.getCountRequest();
+            double srTBP = s.gettBP() / s.getCountRequest();
+            System.out.println("Среднее время обслуживания заявки: " + srTOb);
+            System.out.println("Среднее время ожидания заявки: " + srTBP);
+            System.out.println("Среднее время прибывания заявки в системе: " + (srTOb + srTBP) + "\n");
         }
         System.out.println("\nВсего заявок в отказе " + Source.Request.getCountRefusal());
-        System.out.println("\nСреднее время пребывания заявки в приборе: " +
-                Device.getAllTime() / Device.getCountRequest());
-        System.out.println("\nСреднее время пребывания заявки в буфере: " +
-                Buffer.getAllTime()/Buffer.getCountRequest());
 
-                System.out.println("\nКоэффициенты использования приборов");
+        System.out.println("\nКоэффициенты использования приборов");
         for (Device d : devices){
             System.out.println("Прибор №" + d.getNumber() + " коэффициент " + d.getTimeInDevice()/systemTime);
         }
