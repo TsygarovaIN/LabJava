@@ -3,8 +3,6 @@ package main.ObjectClasses;
 import main.Main;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
 
 //Выбор заявки из буфера на прибор, выбор прибора по кольцу
 public class Manager {

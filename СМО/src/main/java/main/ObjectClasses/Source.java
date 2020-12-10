@@ -2,14 +2,16 @@ package main.ObjectClasses;
 
 import main.Main;
 
+import java.text.DecimalFormat;
+
 //источник
 public class Source {
     private static int countAllRequest;         //количество всех сгенерированных заявок
 
-    private final int number;                        //номер источника
+    private int number;                        //номер источника
     private static final double alpha = Main.alpha;   // для равномерного закона распределения при генерации заявки
     private static final double beta = Main.beta;
-    private double prevTime;               //время генерации предыдущей заявки (-1 если заявки ещё не генерировались)
+    private double prevTime;               //время генерации предыдущей заявки
     private int countRequest = 0;          //количество заявок сгенерированных этим источником
     private int countRefusal = 0;          //количество заявок в отказе
     private double tObc  = 0.0;            //Время обслуживания заявок данного источника
@@ -28,8 +30,28 @@ public class Source {
         Request request = new Request(timeGener, countRequest, number);
         prevTime = timeGener;
 
-       // System.out.println("Заявка " + getNumber() + "." + request.getNumber() + " сгенерирована в " + timeGener);
+//        StringBuilder forTableCount = Draw.drawInt(countRequest, 22);
+//        StringBuilder forTableCountRefus = Draw.drawInt(countRefusal, 22);
+//        StringBuilder forTableGener = Draw.drawTime(timeGener, 12);
+//        StringBuilder forTableAction = Draw.drawAction("генерация", 22);
+//
+//        System.out.println("|     И" + getNumber() +"    " + forTableGener + forTableAction + forTableCount + forTableCountRefus+ "|");
+//        System.out.println("____________|_____________|______________________|______________________|______________________|");
+//
+//        forTableAction = Draw.drawAction("ожидает", 22);
+//        System.out.println("|     И" + getNumber() +"    " + forTableGener + forTableAction + forTableCount + forTableCountRefus+ "|");
+//        System.out.println("____________|_____________|______________________|______________________|______________________|");
         return request;
+    }
+
+    public void clear() {
+        this.number = 0;
+        this.prevTime = 0;
+        this.countRequest = 0;
+        this.countRefusal = 0;
+        this.tObc = 0;
+        this.tBP = 0;
+        countAllRequest = 0;
     }
 
     public double gettObc() {
@@ -96,7 +118,7 @@ public class Source {
         }
 
         public void setInRefusal(boolean inRefusal, int numberSource) {
-           // System.out.println("Заявка " + numberSource + "." + number + " ушла в отказ");
+            //System.out.println("Заявка " + numberSource + "." + number + " ушла в отказ");
             this.inRefusal = inRefusal;
         }
 

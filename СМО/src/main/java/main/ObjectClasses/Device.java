@@ -6,7 +6,7 @@ import main.Main;
 public class Device {
     private static int countRequest = 0;  //количество заявок обработанных всеми приборами
     private static double allTime;       //время обработки всех заявок всеми приборами
-    private static final double lambda = Main.lambda;
+    private static double lambda = Main.lambda;
 
     private Source.Request request;     //заявка, которая находится на приборе
     private int number;                 //номер прибора
@@ -21,21 +21,7 @@ public class Device {
 
     public Device(int number){
         this.number = number;
-       // System.out.println("Создали ПРИБОР " + this);
-    }
-
-    @Override
-    public String toString() {
-        return "Device{" +
-                "request=" + request +
-                ", number=" + number +
-                ", timeEmpty=" + timeEmpty +
-                ", timeAdd=" + timeAdd +
-                ", timeOut=" + timeOut +
-                ", timeInDevice=" + timeInDevice +
-                ", timeToTreatment=" + timeToTreatment +
-                ", numberSource=" + numberSource +
-                '}';
+        lambda = Main.lambda;
     }
 
     public void add(Source.Request request, int numberSource){
@@ -45,12 +31,33 @@ public class Device {
         timeAdd = Main.systemTime;
         timeEmpty = timeAdd - timeOut;
        // System.out.println("Заявка " + numberSource + "." + request.getNumber() + " в приборе №" + number);
-
+//        StringBuilder forTableCount = Draw.drawAction("-", 22);
+//        StringBuilder forTableCountRefus = Draw.drawAction("-",22);
+//        StringBuilder forTableAddTime = Draw.drawTime(timeAdd, 12);
+//        String action = "поступление " + numberSource + "." + request.getNumber();
+//        StringBuilder forTableAction = Draw.drawAction(action, 22);
+//        System.out.println("|     П" + getNumber() +"    " + forTableAddTime + forTableAction + forTableCount + forTableCountRefus+ "|");
+//        System.out.println("____________|_____________|______________________|______________________|______________________|");
         treatment();
     }
 
-    public void delete(){
-       // System.out.println("Заявка " + numberSource + "." + request.getNumber() + " вышла из прибора №" + number);
+    public void delete() {
+        // System.out.println("Заявка " + numberSource + "." + request.getNumber() + " вышла из прибора №" + number);
+//        StringBuilder forTableCount = Draw.drawAction("-", 22);
+//        StringBuilder forTableCountRefus = Draw.drawAction("-", 22);
+//        StringBuilder forTableAddTime = Draw.drawTime(timeAdd, 12);
+//        String action = "удаление " + numberSource + "." + request.getNumber();
+//        StringBuilder forTableAction = Draw.drawAction(action, 22);
+//        System.out.println("|     П" + getNumber() +"    " + forTableAddTime + forTableAction + forTableCount + forTableCountRefus+ "|");
+//        System.out.println("____________|_____________|______________________|______________________|______________________|");
+//
+//        forTableCount = Draw.drawAction("-", 22);
+//        forTableCountRefus = Draw.drawAction("-", 22);
+//        forTableAddTime = Draw.drawTime(timeAdd, 12);
+//        forTableAction = Draw.drawAction("ожидает", 22);
+//        System.out.println("|     П" + getNumber() +"    " + forTableAddTime + forTableAction + forTableCount + forTableCountRefus+ "|");
+//        System.out.println("____________|_____________|______________________|______________________|______________________|");
+
         timeOut = Main.systemTime;
         timeInDevice += timeOut - timeAdd;
         allTime += timeOut - timeAdd;
@@ -60,6 +67,21 @@ public class Device {
         request.setInDevice(false);
         request = null;
         numberSource = 0;
+    }
+
+    public void clear(){
+        this.request = null;
+        this.number = 0;
+        this.timeEmpty = 0;
+        this.timeAdd = 0;
+        this.timeOut = 0;
+        this.timeInDevice = 0;
+        this.timeToTreatment = 0;
+        this.tForSource = 0;
+        this.numberSource = 0;
+        this.countRequestThis = 0;
+        countRequest = 0;
+        allTime = 0;
     }
 
     public boolean isEmpty(){
