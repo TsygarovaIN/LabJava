@@ -25,33 +25,32 @@ public class Buffer {
         request.setInBuffer(true);
         countRequest++;
 
-//        StringBuilder forTableCount = Draw.drawAction("-", 22);
-//        StringBuilder forTableCountRefus = Draw.drawAction("-", 22);
-//        StringBuilder forTableAddTime = Draw.drawTime(timeAdd, 12);
-//        String action = "поступление " + numberSource + "." + request.getNumber();
-//        StringBuilder forTableAction = Draw.drawAction(action, 22);
-//
-//        //System.out.println("Заявка " + numberSource + "." + request.getNumber() + " в буфере №" + number);
-//        System.out.println("|     Б" + getNumber() +"    " + forTableAddTime + forTableAction + forTableCount + forTableCountRefus+ "|");
-//        System.out.println("____________|_____________|______________________|______________________|______________________|");
+        StringBuilder forTableCount = Draw.draw("-", 22);
+        StringBuilder forTableCountRefus = Draw.draw("-", 22);
+        StringBuilder forTableAddTime = Draw.draw(timeAdd, 12);
+        String action = "поступление " + numberSource + "." + request.getNumber();
+        StringBuilder forTableAction = Draw.draw(action, 22);
+
+        System.out.println("|     Б" + getNumber() +"    " + forTableAddTime + forTableAction + forTableCount + forTableCountRefus+ "|");
+        System.out.println("____________|_____________|______________________|______________________|______________________|");
     }
 
     public void delete(){
-        //System.out.println("Заявка " + numberSource + "." + request.getNumber() + " удалена из буфера №" + number);
-//        StringBuilder forTableCount = Draw.drawAction("-", 22);
-//        StringBuilder forTableCountRefus = Draw.drawAction("-", 22);
-//        StringBuilder forTableAddTime = Draw.drawTime(timeAdd, 12);
-//        String action = "удаление " + numberSource + "." + request.getNumber();
-//        StringBuilder forTableAction = Draw.drawAction(action, 22);
-//        System.out.println("|     Б" + getNumber() +"    " + forTableAddTime + forTableAction + forTableCount + forTableCountRefus+ "|");
-//        System.out.println("____________|_____________|______________________|______________________|______________________|");
-//
-//        forTableCount = Draw.drawAction("-", 22);
-//        forTableCountRefus = Draw.drawAction("-", 22);
-//        forTableAddTime = Draw.drawTime(timeAdd, 12);
-//        forTableAction = Draw.drawAction("ожидает", 22);
-//        System.out.println("|     Б" + getNumber() +"    " + forTableAddTime + forTableAction + forTableCount + forTableCountRefus+ "|");
-//        System.out.println("____________|_____________|______________________|______________________|______________________|");
+        System.out.println("Заявка " + numberSource + "." + request.getNumber() + " удалена из буфера №" + number);
+        StringBuilder forTableCount = Draw.draw("-", 22);
+        StringBuilder forTableCountRefus = Draw.draw("-", 22);
+        StringBuilder forTableAddTime = Draw.draw(timeAdd, 12);
+        String action = "удаление " + numberSource + "." + request.getNumber();
+        StringBuilder forTableAction = Draw.draw(action, 22);
+        System.out.println("|     Б" + getNumber() +"    " + forTableAddTime + forTableAction + forTableCount + forTableCountRefus+ "|");
+        System.out.println("____________|_____________|______________________|______________________|______________________|");
+
+        forTableCount = Draw.draw("-", 22);
+        forTableCountRefus = Draw.draw("-", 22);
+        forTableAddTime = Draw.draw(timeAdd, 12);
+        forTableAction = Draw.draw("ожидает", 22);
+        System.out.println("|     Б" + getNumber() +"    " + forTableAddTime + forTableAction + forTableCount + forTableCountRefus+ "|");
+        System.out.println("____________|_____________|______________________|______________________|______________________|");
 
         request.setInBuffer(false);
         timeOut = Main.systemTime;

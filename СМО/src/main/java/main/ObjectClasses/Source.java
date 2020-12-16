@@ -30,17 +30,17 @@ public class Source {
         Request request = new Request(timeGener, countRequest, number);
         prevTime = timeGener;
 
-//        StringBuilder forTableCount = Draw.drawInt(countRequest, 22);
-//        StringBuilder forTableCountRefus = Draw.drawInt(countRefusal, 22);
-//        StringBuilder forTableGener = Draw.drawTime(timeGener, 12);
-//        StringBuilder forTableAction = Draw.drawAction("генерация", 22);
-//
-//        System.out.println("|     И" + getNumber() +"    " + forTableGener + forTableAction + forTableCount + forTableCountRefus+ "|");
-//        System.out.println("____________|_____________|______________________|______________________|______________________|");
-//
-//        forTableAction = Draw.drawAction("ожидает", 22);
-//        System.out.println("|     И" + getNumber() +"    " + forTableGener + forTableAction + forTableCount + forTableCountRefus+ "|");
-//        System.out.println("____________|_____________|______________________|______________________|______________________|");
+        StringBuilder forTableCount = Draw.draw(countRequest, 22);
+        StringBuilder forTableCountRefus = Draw.draw(countRefusal, 22);
+        StringBuilder forTableGener = Draw.draw(timeGener, 12);
+        StringBuilder forTableAction = Draw.draw("генерация", 22);
+
+        System.out.println("|     И" + getNumber() +"    " + forTableGener + forTableAction + forTableCount + forTableCountRefus+ "|");
+        System.out.println("____________|_____________|______________________|______________________|______________________|");
+
+        forTableAction = Draw.draw("ожидает", 22);
+        System.out.println("|     И" + getNumber() +"    " + forTableGener + forTableAction + forTableCount + forTableCountRefus+ "|");
+        System.out.println("____________|_____________|______________________|______________________|______________________|");
         return request;
     }
 

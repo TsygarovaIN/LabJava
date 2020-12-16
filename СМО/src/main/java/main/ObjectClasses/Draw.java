@@ -3,7 +3,7 @@ package main.ObjectClasses;
 import java.text.DecimalFormat;
 
 public class Draw {
-    public static StringBuilder drawInt(int count, int space){
+    public static StringBuilder draw(int count, int space){
         StringBuilder forTableCount = new StringBuilder("|");
         int num = count;
         int length = (num == 0) ? 1 : 0;
@@ -28,7 +28,7 @@ public class Draw {
         return  forTableCount;
     }
 
-    public static StringBuilder drawTime(double time, int space){
+    public static StringBuilder draw(double time, int space){
         StringBuilder forTable = new StringBuilder("|");
         DecimalFormat df = new DecimalFormat("###.###");
         String[] dfS = df.format(time).split(",");
@@ -59,7 +59,7 @@ public class Draw {
         return forTable;
     }
 
-    public static StringBuilder drawAction(String action, int space){
+    public static StringBuilder draw(String action, int space){
         StringBuilder forTableAction = new StringBuilder("|");
         int length = action.length();
         int numberS = space - length; //22
